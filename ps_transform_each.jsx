@@ -77,45 +77,45 @@ function makeActiveByIndex(idx, visible) {
 }
 var selectedLayers = getSelectedLayersIdx();
 var doc = app.activeDocument;
-var UI_res = "dialog{ text: \'Transform Each (" + selectedLayers.length + " Layers Selected)\', preferredSize:[-1, -1],\
-                    scale: Panel { text:\'Scale\', orientation: \'row\', alignment:\'center\', alignChildren:\'right\', preferredSize:[340,0],\
-                        controls: Group {orientation: \'column\', alignChildren:\'right\',\
-                            horizontal: Group {orientation: \'row\', margins:[20,5,10,5]\
-                                label: StaticText {text:\'Width:\'},\
+var UI_res = "dialog{ text: 'Transform Each (" + selectedLayers.length + " Layers Selected)', preferredSize:[-1, -1],\
+                    scale: Panel { text:'Scale', orientation: 'row', alignment:'center', alignChildren:'right', preferredSize:[340,0],\
+                        controls: Group {orientation: 'column', alignChildren:'right',\
+                            horizontal: Group {orientation: 'row', margins:[20,5,10,5]\
+                                label: StaticText {text:'Width:'},\
                                 slider: Slider {value:100, maxvalue:300, minvalue:0, preferredSize:[150,-1]},\
-                                txt: EditText {text:\'100%\', characters: 5},\
+                                txt: EditText {text:'100%', characters: 5},\
                             },\
-                            vertical: Group {orientation: \'row\', margins:[20,5,10,5]\
-                                label: StaticText {text:\'Height:\'},\
+                            vertical: Group {orientation: 'row', margins:[20,5,10,5]\
+                                label: StaticText {text:'Height:'},\
                                 slider: Slider {value:100, maxvalue:300, minvalue:0, preferredSize:[150,-1]},\
-                                txt: EditText {text:\'100%\', characters: 5},\
+                                txt: EditText {text:'100%', characters: 5},\
                             },\
                         }\
                     }\
-                    rotate: Panel { text:\'Rotate\', orientation: \'row\', alignment:\'center\', alignChildren:\'right\', preferredSize:[340,0],\
-                        angle: Group {orientation: \'row\', margins:[20,5,10,5],\
-                            label: StaticText {text:\'Angle:\'}\
+                    rotate: Panel { text:'Rotate', orientation: 'row', alignment:'center', alignChildren:'right', preferredSize:[340,0],\
+                        angle: Group {orientation: 'row', margins:[20,5,10,5],\
+                            label: StaticText {text:'Angle:'}\
                             slider: Slider {value:0, maxvalue:360, minvalue:-360, preferredSize:[150,-1]},\
-                            txt: EditText {text:\'0\u02da\', characters: 5},\
+                            txt: EditText {text:'0\u02da', characters: 5},\
                         },\
                     }\
-                    aPoint: Panel { text:\'Transformation Point\', orientation: \'row\', alignment:\'center\', alignChildren:\'center\', preferredSize:[340,0],\
-                        control: Group {orientation: \'row\', alignChildren:\'left\', margins:[20,5,10,5],\
-                            txt: StaticText {text:\'Placement:\'},\
+                    aPoint: Panel { text:'Transformation Point', orientation: 'row', alignment:'center', alignChildren:'center', preferredSize:[340,0],\
+                        control: Group {orientation: 'row', alignChildren:'left', margins:[20,5,10,5],\
+                            txt: StaticText {text:'Placement:'},\
                         }\
                     }\
-                    options: Panel { text:\'Options\', orientation: \'row\', alignment:\'fill\', alignChildren:\'left\', preferredSize:[340,0],\
-                        checkboxes: Group {orientation: \'row\', alignChildren:\'left\', margins:[20,5,10,5],\
-                            scaleStyles: Checkbox {text:\'Scale Styles\', value: true},\
-                            lockScale: Checkbox {text:\'Constrain Proportions\', value: true},\
+                    options: Panel { text:'Options', orientation: 'row', alignment:'fill', alignChildren:'left', preferredSize:[340,0],\
+                        checkboxes: Group {orientation: 'row', alignChildren:'left', margins:[20,5,10,5],\
+                            scaleStyles: Checkbox {text:'Scale Styles', value: true},\
+                            lockScale: Checkbox {text:'Constrain Proportions', value: true},\
                         }\
                     }\
-                    buttons: Group{ orientation: \'row\', alignChildren:\'right\', margins:[0,5,10,5], \
-                        about_btn: Button {text: \'?\', preferredSize:[30,-1]},\
-                        preview_btn: Button {text: \'Preview\'},\
+                    buttons: Group{ orientation: 'row', alignChildren:'right', margins:[0,5,10,5], \
+                        about_btn: Button {text: '?', preferredSize:[30,-1]},\
+                        preview_btn: Button {text: 'Preview'},\
                         group: Group { margins:[30,-1,-1,-1],\
-                            ok_btn: Button {text:\'OK\'},\
-                            cancel_btn: Button {text:\'Cancel\'},\
+                            ok_btn: Button {text:'OK'},\
+                            cancel_btn: Button {text:'Cancel'},\
                         }\
                     }\
                 }";
