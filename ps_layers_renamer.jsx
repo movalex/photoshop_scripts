@@ -5,23 +5,30 @@
  * Decompiled with Jsxer Version: 1.4.1 from JSXBIN 2.0
  */
 
-function prependAppend(mode, selectedLayers, txt) {
+function doRename(mode, selectedLayers, txt, startNumber, inverse) {
+    try {
+        startNumber = Number(startNumber)
+    } catch (e) {
+        alert(e, "Need to be a number!")
+    }
+    var countEnd = selectedLayers.length + startNumber - 1
     for (var i = 0; i < selectedLayers.length; i += 1) {
         makeActiveByIndex([selectedLayers[i]], false);
         tmpTxt = txt;
-        tmpTxt = tmpTxt.replace("%n", selectedLayers.length - i);
+        docName = app.activeDocument.name;
+        layerName = app.activeDocument.activeLayer.name
+        layerNumber = countEnd - i
+        if (inverse){
+            layerNumber = startNumber + i
+        }
+        tmpTxt = tmpTxt.replace("$t", layerName);
+        tmpTxt = tmpTxt.replace("$d", docName);
         switch (mode) {
-            case "append":
-                app.activeDocument.activeLayer.name += tmpTxt;
-                break;
-            case "prepend":
-                app.activeDocument.activeLayer.name = tmpTxt + app.activeDocument.activeLayer.name;
-                break;
-            case "replace":
-                app.activeDocument.activeLayer.name = tmpTxt;
+            case "enumerate":
+                app.activeDocument.activeLayer.name = tmpTxt + " " + layerNumber.toString();
                 break;
             default:
-                app.activeDocument.activeLayer.name += tmpTxt;
+                app.activeDocument.activeLayer.name = tmpTxt;
                 break;
         }
     }
@@ -76,44 +83,56 @@ function makeActiveByIndex(idx, visible) {
 }
 var selectedLayers = getSelectedLayersIdx();
 
-var myResource = "dialog{ text: '" + selectedLayers.length + " Layers Selected', preferredSize:[-1, -1], alignChildren:'right',\
-                    controls: Panel{ orientation: 'column', alignChildren:'right',\
-                                  preferredSize:[250, -1],\
-                        txt: Group{ orientation: 'row',\
-                            label: StaticText {text:'Text: '}\
-                            input: EditText {text:'', characters: 28, active:true}\
-                        }\
-                        rbuttons: Group{orientation:'row',\
-                            label: StaticText {text:'Mode: '}\
-                            append: RadioButton {text:'Append', value:true}\
-                            prepend: RadioButton {text:'Prepend'}\
-                            replace: RadioButton {text:'Replace'}\
-                        }\
-                    }\
-                    buttons: Group{ orientation: 'row',\
-                        ok_btn: Button {text:'OK'},\
-                        cancel_btn: Button {text:'Cancel'},\
-                    }\
-                }";
 try {
     if (selectedLayers.length > 1) {
-        var myWindow = new Window(myResource);
-        if (myWindow.show() == 1) {
-            var txt = myWindow.controls.txt.input.text;
-            var append = myWindow.controls.rbuttons.append.value;
-            var prepend = myWindow.controls.rbuttons.prepend.value;
-            var replace = myWindow.controls.rbuttons.replace.value;
-            if (append) {
-                var preppendAppend_label = "Appended";
-                var mode = "append";
-            } else if (prepend) {
-                var prependAppend_label = "Prepended";
-                var mode = "prepend";
-            } else {
-                var prependAppend_label = "Replaced";
-                var mode = "replace";
+        var title = selectedLayers.length.toString() + " Layers Selected";
+        var dialog = new Window("dialog", title);
+        dialog.alignChildren = "right";
+        dialog.margins = 10;
+        dialog.closeButton = false;
+
+        var inputGroup = dialog.add("group");
+        inputGroup.orientation = "row";
+        var label = inputGroup.add("statictext");
+        label.text = "Rename to:";
+        var input = inputGroup.add("edittext");
+        input.characters = 30;
+        input.active = true;
+
+        var dPanel = dialog.add("panel", undefined, "Rename options");
+        dPanel.orientation = "row";
+        dPanel.alignChildren = "left";
+        dPanel.preferredSize = [350, -1];
+        var enumCheckBox = dPanel.add("checkbox", undefined, "Enumerate");
+        enumCheckBox.value = true;
+        var reverseCheckBox = dPanel.add("checkbox", undefined, "Reverse");
+        reverseCheckBox.value = false;
+        
+        var submitGroup = dialog.add("group");
+        submitGroup.orientation = "row";
+        var ok_btn = submitGroup.add("button", undefined, "OK");
+        var cancel_btn = submitGroup.add("button", undefined, "Cancel");
+
+        enumCheckBox.onClick = function (){
+            var doEnum = enumCheckBox.value;
+            if (doEnum) {
+                reverseCheckBox.enabled = true
             }
-            app.activeDocument.suspendHistory("Layers Renamer Script", "prependAppend(mode, selectedLayers, txt)");
+            else {
+                reverseCheckBox.enabled = false
+                reverseCheckBox.value = false
+            }
+        }
+
+        if (dialog.show() == 1) {
+            var mode = "_"
+            var txt = input.text;
+            var doReverse = reverseCheckBox.value
+            var doEnum = enumCheckBox.value
+            if (doEnum) {
+                mode = "enumerate"
+            }
+            app.activeDocument.suspendHistory("Layers Renamer Script", "doRename(mode, selectedLayers, txt, 10, doReverse)");
             makeActiveByIndex(selectedLayers, false);
         }
     } else {
