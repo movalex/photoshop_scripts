@@ -7,15 +7,21 @@
 
 function doRename(mode, selectedLayers, txt, startNumber, inverse) {
     try {
-        startNumber = Number(startNumber)
+        startNumber = parseFloat(startNumber)
     } catch (e) {
         alert(e, "Need to be a number!")
     }
+    if (isNaN(startNumber)) {
+        alert("Unable to parse the start number, starting from 0");
+        startNumber = 0;
+    }
+    startNumber = Math.floor(startNumber);
     var countEnd = selectedLayers.length + startNumber - 1
     for (var i = 0; i < selectedLayers.length; i += 1) {
         makeActiveByIndex([selectedLayers[i]], false);
         tmpTxt = txt;
         docName = app.activeDocument.name;
+        docName = docName.replace(".psd", "");
         layerName = app.activeDocument.activeLayer.name
         layerNumber = countEnd - i
         if (inverse){
@@ -94,7 +100,7 @@ try {
         var inputGroup = dialog.add("group");
         inputGroup.orientation = "row";
         var label = inputGroup.add("statictext");
-        label.text = "Rename to:";
+        label.text = "Rename to: ";
         var input = inputGroup.add("edittext");
         input.characters = 30;
         input.active = true;
@@ -105,8 +111,17 @@ try {
         dPanel.preferredSize = [350, -1];
         var enumCheckBox = dPanel.add("checkbox", undefined, "Enumerate");
         enumCheckBox.value = true;
-        var reverseCheckBox = dPanel.add("checkbox", undefined, "Reverse");
+        var reverseCheckBox = dPanel.add("checkbox", undefined, "Reverse Order");
         reverseCheckBox.value = false;
+
+        var startNumGroup = dPanel.add("group");
+        startNumGroup.orientation = "row";
+        startNumGroup.alignChildren = "right";
+        var startNumInput = startNumGroup.add("edittext");
+        var startNumLabel = startNumGroup.add("statictext");
+        startNumInput.characters = 3;
+        startNumInput.text = 0;
+        startNumLabel.text = "Start Enumeration From"
         
         var submitGroup = dialog.add("group");
         submitGroup.orientation = "row";
@@ -125,14 +140,18 @@ try {
         }
 
         if (dialog.show() == 1) {
-            var mode = "_"
+            var mode = "";
             var txt = input.text;
-            var doReverse = reverseCheckBox.value
-            var doEnum = enumCheckBox.value
-            if (doEnum) {
-                mode = "enumerate"
+            var doReverse = reverseCheckBox.value;
+            var doEnum = enumCheckBox.value;
+            var startNum = startNumInput.text;
+            if (!startNum) {
+                startNum = 0;
             }
-            app.activeDocument.suspendHistory("Layers Renamer Script", "doRename(mode, selectedLayers, txt, 10, doReverse)");
+            if (doEnum) {
+                mode = "enumerate";
+            }
+            app.activeDocument.suspendHistory("Layers Renamer Script", "doRename(mode, selectedLayers, txt, startNum, doReverse)");
             makeActiveByIndex(selectedLayers, false);
         }
     } else {
