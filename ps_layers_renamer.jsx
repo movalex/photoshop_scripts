@@ -3,6 +3,7 @@
  * Version 1.1
  * Created by Kamil Khadeyev (@darkwark)
  * Decompiled with Jsxer Version: 1.4.1 from JSXBIN 2.0
+ * Updates by Alexey Bogomolov (@movalex)
  */
 
 function doRename(mode, selectedLayers, txt, startNumber, inverse) {
