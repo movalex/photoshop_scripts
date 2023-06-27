@@ -1,14 +1,10 @@
 /*
- * Transform Each Selected Layer Script
- * Version 2.2
- * Created by Kamil Khadeyev (@darkwark)
- * Decompiled with Jsxer Version: 1.4.1 from JSXBIN 2.0
- * Updates by Alexey Bogomolov (@movalex)
- * LICENSE: MIT
+ * Decompiled with Jsxer
+ * Version: 1.4.1
+ * JSXBIN 2.0
  */
 
-
-function transformEach(selectedLayers, horizontal, vertical, angle, scaleFX, anchorPosition) {
+function transformEach(anchorPosition, angle, horizontal, scaleFX, selectedLayers, vertical) {
     for (var i = 0; i < selectedLayers.length; i += 1) {
         makeActiveByIndex([selectedLayers[i]], false);
         app.activeDocument.activeLayer.resize(horizontal, vertical, anchorPosition);
@@ -79,64 +75,10 @@ function makeActiveByIndex(idx, visible) {
 }
 var selectedLayers = getSelectedLayersIdx();
 var doc = app.activeDocument;
-var UI_res = "dialog{ text: 'Transform Each (" + selectedLayers.length + " Layers Selected)', preferredSize:[-1, -1],\
-                    scale: Panel { text:'Scale', orientation: 'row', alignment:'center', alignChildren:'right', preferredSize:[340,0],\
-                        controls: Group {orientation: 'column', alignChildren:'right',\
-                            horizontal: Group {orientation: 'row', margins:[20,5,10,5]\
-                                label: StaticText {text:'Width:'},\
-                                slider: Slider {value:100, maxvalue:300, minvalue:0, preferredSize:[150,-1]},\
-                                txt: EditText {text:'100%', characters: 5},\
-                            },\
-                            vertical: Group {orientation: 'row', margins:[20,5,10,5]\
-                                label: StaticText {text:'Height:'},\
-                                slider: Slider {value:100, maxvalue:300, minvalue:0, preferredSize:[150,-1]},\
-                                txt: EditText {text:'100%', characters: 5},\
-                            },\
-                        }\
-                    }\
-                    rotate: Panel { text:'Rotate', orientation: 'row', alignment:'center', alignChildren:'right', preferredSize:[340,0],\
-                        angle: Group {orientation: 'row', margins:[20,5,10,5],\
-                            label: StaticText {text:'Angle:'}\
-                            slider: Slider {value:0, maxvalue:360, minvalue:-360, preferredSize:[150,-1]},\
-                            txt: EditText {text:'0\u02da', characters: 5},\
-                        },\
-                    }\
-                    aPoint: Panel { text:'Transformation Point', orientation: 'row', alignment:'center', alignChildren:'center', preferredSize:[340,0],\
-                        control: Group {orientation: 'row', alignChildren:'left', margins:[20,5,10,5],\
-                            txt: StaticText {text:'Placement:'},\
-                        }\
-                    }\
-                    options: Panel { text:'Options', orientation: 'row', alignment:'fill', alignChildren:'left', preferredSize:[340,0],\
-                        checkboxes: Group {orientation: 'row', alignChildren:'left', margins:[20,5,10,5],\
-                            scaleStyles: Checkbox {text:'Scale Styles', value: true},\
-                            lockScale: Checkbox {text:'Constrain Proportions', value: true},\
-                        }\
-                    }\
-                    buttons: Group{ orientation: 'row', alignChildren:'right', margins:[0,5,10,5], \
-                        about_btn: Button {text: '?', preferredSize:[30,-1]},\
-                        preview_btn: Button {text: 'Preview'},\
-                        group: Group { margins:[30,-1,-1,-1],\
-                            ok_btn: Button {text:'OK'},\
-                            cancel_btn: Button {text:'Cancel'},\
-                        }\
-                    }\
-                }";
-
+var UI_res = "dialog{ text: \'Transform Each (" + selectedLayers.length + " Layers Selected)\', preferredSize:[-1, -1],\n\t\t\t\t\tscale: Panel { text:\'Scale\', orientation: \'row\', alignment:\'center\', alignChildren:\'right\', preferredSize:[340,0],\n\t\t\t\t\t\tcontrols: Group {orientation: \'column\', alignChildren:\'right\',\n\t\t\t\t\t\t\thorizontal: Group {orientation: \'row\', margins:[20,5,10,5]\n\t\t\t\t\t\t\t\tlabel: StaticText {text:\'Width:\'},\n\t\t\t\t\t\t\t\tslider: Slider {value:100, maxvalue:300, minvalue:0, preferredSize:[150,-1]},\n\t\t\t\t\t\t\t\ttxt: EditText {text:\'100%\', characters: 5},\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\tvertical: Group {orientation: \'row\', margins:[20,5,10,5]\n\t\t\t\t\t\t\t\tlabel: StaticText {text:\'Height:\'},\n\t\t\t\t\t\t\t\tslider: Slider {value:100, maxvalue:300, minvalue:0, preferredSize:[150,-1]},\n\t\t\t\t\t\t\t\ttxt: EditText {text:\'100%\', characters: 5},\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\trotate: Panel { text:\'Rotate\', orientation: \'row\', alignment:\'center\', alignChildren:\'right\', preferredSize:[340,0],\n\t\t\t\t\t\tangle: Group {orientation: \'row\', margins:[20,5,10,5],\n\t\t\t\t\t\t\tlabel: StaticText {text:\'Angle:\'}\n\t\t\t\t\t\t\tslider: Slider {value:0, maxvalue:360, minvalue:-360, preferredSize:[150,-1]},\n\t\t\t\t\t\t\ttxt: EditText {text:\'0\u02da\', characters: 5},\n\t\t\t\t\t\t},\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\taPoint: Panel { text:\'Transformation Point\', orientation: \'row\', alignment:\'center\', alignChildren:\'center\', preferredSize:[340,0],\n\t\t\t\t\t\tcontrol: Group {orientation: \'row\', alignChildren:\'left\', margins:[20,5,10,5],\n\t\t\t\t\t\t\ttxt: StaticText {text:\'Placement:\'},\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\toptions: Panel { text:\'Options\', orientation: \'row\', alignment:\'fill\', alignChildren:\'left\', preferredSize:[340,0],\n\t\t\t\t\t\tcheckboxes: Group {orientation: \'row\', alignChildren:\'left\', margins:[20,5,10,5],\n\t\t\t\t\t\t\tscaleStyles: Checkbox {text:\'Scale Styles\', value: true},\n\t\t\t\t\t\t\tlockScale: Checkbox {text:\'Constrain Proportions\', value: true},\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\tbuttons: Group{ orientation: \'row\', alignChildren:\'right\', margins:[0,5,10,5], \n\t\t\t\t\t\tabout_btn: Button {text: \'?\', preferredSize:[30,-1]},\n\t\t\t\t\t\tpreview_btn: Button {text: \'Preview\'},\n\t\t\t\t\t\tgroup: Group { margins:[30,-1,-1,-1],\n\t\t\t\t\t\t\tok_btn: Button {text:\'OK\'},\n\t\t\t\t\t\t\tcancel_btn: Button {text:\'Cancel\'},\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}";
 try {
     w = new Window(UI_res);
-    var aPoint = w.aPoint.control.add("dropdownlist", undefined, [
-        "Top Left",
-        "Top Center",
-        "Top Right",
-        "-",
-        "Middle Left",
-        "Middle Center",
-        "Middle Right",
-        "-",
-        "Bottom Left",
-        "Bottom Center",
-        "Bottom Right"
-    ]);
+    var aPoint = w.aPoint.control.add("dropdownlist", undefined, ["Top Left", "Top Center", "Top Right", "-", "Middle Left", "Middle Center", "Middle Right", "-", "Bottom Left", "Bottom Center", "Bottom Right"]);
     aPoint.preferredSize = [180, -1];
     aPoint.selection = 5;
     var horizontal_sl = w.scale.controls.horizontal.slider;
@@ -152,7 +94,6 @@ try {
 } catch (e) {
     alert(e);
 }
-
 lockScale_cb.onClick = (function() {
     if (vertical_sl.value < horizontal_sl.value) {
         vertical_sl.value = horizontal_sl.value;
@@ -233,33 +174,13 @@ angle_txt.onChange = (function() {
     this.text += "\u02da";
 });
 about_btn.onClick = (function() {
-    alert("Transform Each 2.2\nCreated by Kamil Khadeyev (@darkwark)");
+    alert("Transform Each 2.1\nCreated by Kamil Khadeyev (@darkwark)\nblog.kam88.com\n\xa9 2015");
 });
 var anchorPosition = AnchorPosition.MIDDLECENTER;
-var aPointPositions = [AnchorPosition.TOPLEFT,
-                       AnchorPosition.TOPCENTER,
-                       AnchorPosition.TOPRIGHT,
-                       "",
-                       AnchorPosition.MIDDLELEFT,
-                       AnchorPosition.MIDDLECENTER,
-                       AnchorPosition.MIDDLERIGHT,
-                       "",
-                       AnchorPosition.BOTTOMLEFT,
-                       AnchorPosition.BOTTOMCENTER,
-                       AnchorPosition.BOTTOMRIGHT];
+var aPointPositions = [AnchorPosition.TOPLEFT, AnchorPosition.TOPCENTER, AnchorPosition.TOPRIGHT, "", AnchorPosition.MIDDLELEFT, AnchorPosition.MIDDLECENTER, AnchorPosition.MIDDLERIGHT, "", AnchorPosition.BOTTOMLEFT, AnchorPosition.BOTTOMCENTER, AnchorPosition.BOTTOMRIGHT];
 aPoint.onChange = (function() {
     anchorPosition = aPointPositions[this.selection.index];
 });
-
-function runScriptWithHistory() {
-    app.activeDocument.suspendHistory("Transform Each Script", "transformEach(selectedLayers, \
-                                                            parseInt(horizontal_txt.text), \
-                                                            parseInt(vertical_txt.text), \
-                                                            parseInt(angle_txt.text), \
-                                                            scaleStyles_cb.value, \
-                                                            anchorPosition)");
-}
-
 var previewClicked = false;
 preview_btn.onClick = (function() {
     if (previewClicked) {
@@ -270,34 +191,27 @@ preview_btn.onClick = (function() {
     prevAngle = parseInt(angle_txt.text);
     prevScaleStyles = scaleStyles_cb.value;
     prevAPos = anchorPosition;
-    runScriptWithHistory()
+    app.activeDocument.suspendHistory("[KAM] Transform Each Script (Learn more: http://blog.kam88.com)", "transformEach(selectedLayers, parseInt(horizontal_txt.text), parseInt(vertical_txt.text), parseInt(angle_txt.text), scaleStyles_cb.value, anchorPosition)");
     makeActiveByIndex(selectedLayers, false);
     previewClicked = true;
     app.refresh();
 });
-
-
 if (selectedLayers.length > 1) {
     if (w.show() == 1) {
-        if (previewClicked && (prevH != parseInt(horizontal_txt.text) ||
-                               prevW != parseInt(vertical_txt.text) ||
-                               prevAngle != parseInt(angle_txt.text) ||
-                               prevScaleStyles != scaleStyles_cb.value ||
-                               prevAPos != anchorPosition)) {
+        if ((previewClicked) && (((((prevH != parseInt(horizontal_txt.text)) || (prevW != parseInt(vertical_txt.text))) || (prevAngle != parseInt(angle_txt.text))) || (prevScaleStyles != scaleStyles_cb.value)) || (prevAPos != anchorPosition))) {
             doc.activeHistoryState = doc.historyStates[doc.historyStates.length - 2];
-            runScriptWithHistory()
+            app.activeDocument.suspendHistory("[KAM] Transform Each Script (Learn more: http://blog.kam88.com)", "transformEach(selectedLayers, parseInt(horizontal_txt.text), parseInt(vertical_txt.text), parseInt(angle_txt.text), scaleStyles_cb.value, anchorPosition)");
             makeActiveByIndex(selectedLayers, false);
         }
         if (!previewClicked) {
-            runScriptWithHistory()
+            app.activeDocument.suspendHistory("[KAM] Transform Each Script (Learn more: http://blog.kam88.com)", "transformEach(selectedLayers, parseInt(horizontal_txt.text), parseInt(vertical_txt.text), parseInt(angle_txt.text), scaleStyles_cb.value, anchorPosition)");
             makeActiveByIndex(selectedLayers, false);
         }
     } else {
         if (previewClicked) {
             doc.activeHistoryState = doc.historyStates[doc.historyStates.length - 2];
-
         }
     }
 } else {
-    alert("Please select more than 1 layer");
+    alert("Ouch!\nPlease select more than 1 layer");
 }
