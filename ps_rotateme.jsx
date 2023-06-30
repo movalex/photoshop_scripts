@@ -47,81 +47,7 @@ function rotateMe3(dAngle, groupLayers, layer, radius, rotateRelativePath, saveO
         aLayer.remove();
     }
 }
-function drawRectangle(color, height, width, x, y) {
-    var tmpColor = app.foregroundColor;
-    app.foregroundColor = color;
-    var idMk = charIDToTypeID("Mk  ");
-    var desc9 = new ActionDescriptor();
-    var idnull = charIDToTypeID("null");
-    var ref7 = new ActionReference();
-    var idcontentLayer = stringIDToTypeID("contentLayer");
-    ref7.putClass(idcontentLayer);
-    desc9.putReference(idnull, ref7);
-    var idUsng = charIDToTypeID("Usng");
-    var idType = charIDToTypeID("Type");
-    var desc10 = new ActionDescriptor();
-    var idsolidColorLayer = stringIDToTypeID("solidColorLayer");
-    desc10.putClass(idType, idsolidColorLayer);
-    var idShp = charIDToTypeID("Shp ");
-    var desc11 = new ActionDescriptor();
-    var idTop = charIDToTypeID("Top ");
-    var idPxl = charIDToTypeID("#Pxl");
-    desc11.putUnitDouble(idTop, idPxl, y);
-    var idLeft = charIDToTypeID("Left");
-    var idPxl = charIDToTypeID("#Pxl");
-    desc11.putUnitDouble(idLeft, idPxl, x);
-    var idBtom = charIDToTypeID("Btom");
-    var idPxl = charIDToTypeID("#Pxl");
-    desc11.putUnitDouble(idBtom, idPxl, y + height);
-    var idRght = charIDToTypeID("Rght");
-    var idPxl = charIDToTypeID("#Pxl");
-    desc11.putUnitDouble(idRght, idPxl, x + width);
-    var idElps = charIDToTypeID("Rctn");
-    desc10.putObject(idShp, idElps, desc11);
-    var idcontentLayer = stringIDToTypeID("contentLayer");
-    desc9.putObject(idUsng, idcontentLayer, desc10);
-    executeAction(idMk, desc9, DialogModes.NO);
-    app.foregroundColor = tmpColor;
-    return app.activeDocument.activeLayer;
-}
-function drawEllipse(color, height, width, x, y) {
-    var tmpColor = app.foregroundColor;
-    app.foregroundColor = color;
-    var idMk = charIDToTypeID("Mk  ");
-    var desc9 = new ActionDescriptor();
-    var idnull = charIDToTypeID("null");
-    var ref7 = new ActionReference();
-    var idcontentLayer = stringIDToTypeID("contentLayer");
-    ref7.putClass(idcontentLayer);
-    desc9.putReference(idnull, ref7);
-    var idUsng = charIDToTypeID("Usng");
-    var idType = charIDToTypeID("Type");
-    var desc10 = new ActionDescriptor();
-    var idsolidColorLayer = stringIDToTypeID("solidColorLayer");
-    desc10.putClass(idType, idsolidColorLayer);
-    var idShp = charIDToTypeID("Shp ");
-    var desc11 = new ActionDescriptor();
-    var idTop = charIDToTypeID("Top ");
-    var idPxl = charIDToTypeID("#Pxl");
-    desc11.putUnitDouble(idTop, idPxl, y);
-    var idLeft = charIDToTypeID("Left");
-    var idPxl = charIDToTypeID("#Pxl");
-    desc11.putUnitDouble(idLeft, idPxl, x);
-    var idBtom = charIDToTypeID("Btom");
-    var idPxl = charIDToTypeID("#Pxl");
-    desc11.putUnitDouble(idBtom, idPxl, y + height);
-    var idRght = charIDToTypeID("Rght");
-    var idPxl = charIDToTypeID("#Pxl");
-    desc11.putUnitDouble(idRght, idPxl, x + width);
-    var idElps = charIDToTypeID("Elps");
-    desc10.putObject(idShp, idElps, desc11);
-    var idcontentLayer = stringIDToTypeID("contentLayer");
-    desc9.putObject(idUsng, idcontentLayer, desc10);
-    executeAction(idMk, desc9, DialogModes.NO);
-    app.foregroundColor = tmpColor;
-    return app.activeDocument.activeLayer;
-}
-function unitCircle(angle, radius) {
+function unitCircle(radius, angle) {
     var x = Math.cos(radians(angle)) * radius;
     var y = Math.sin(radians(angle)) * radius;
     return [x, y];
@@ -258,5 +184,5 @@ if (app.activeDocument.activeLayer.layers == undefined) {
     }
 }
 else {
-    alert("Opps!\nPlease select regular layer");
+    alert("Please select regular layer");
 }
