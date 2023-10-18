@@ -1,23 +1,43 @@
 /*
  * Batch Rename Selected Layers Script
- * Version 1.1
+ * Version 1.2
  * Created by Kamil Khadeyev (@darkwark)
  * Decompiled with Jsxer Version: 1.4.1 from JSXBIN 2.0
  * Updates by Alexey Bogomolov (@movalex)
  */
 
-function doRename(mode, selectedLayers, txt, startNumber, inverse) {
+function verifyFLoat(num) {
     try {
-        startNumber = parseFloat(startNumber)
+        num = parseFloat(num);
+        if (isNaN(num)) {
+            alert("Unable to parse the start number, starting from 0");
+            num = 0;
+        }
+        return num;
     } catch (e) {
         alert(e, "Need to be a number!")
     }
-    if (isNaN(startNumber)) {
-        alert("Unable to parse the start number, starting from 0");
-        startNumber = 0;
+}
+
+function makeActiveByIndex(idx, visible) {
+    for (var i = 0; i < idx.length; i += 1) {
+        var desc = new ActionDescriptor();
+        var ref = new ActionReference();
+        ref.putIndex(charIDToTypeID("Lyr "), idx[i]);
+        desc.putReference(charIDToTypeID("null"), ref);
+        if (i > 0) {
+            var idselectionModifier = stringIDToTypeID("selectionModifier");
+            var idselectionModifierType = stringIDToTypeID("selectionModifierType");alert
+            var idaddToSelection = stringIDToTypeID("addToSelection");
+            desc.putEnumerated(idselectionModifier, idselectionModifierType, idaddToSelection);
+        }
+        desc.putBoolean(charIDToTypeID("MkVs"), visible);
+        executeAction(charIDToTypeID("slct"), desc, DialogModes.NO);
     }
-    startNumber = Math.floor(startNumber);
-    var countEnd = selectedLayers.length + startNumber - 1
+}
+
+function renameSelectedLayers(mode, selectedLayers, txt, startNumber, inverse) {
+    var countEnd = selectedLayers.length + startNumber - 1;
     for (var i = 0; i < selectedLayers.length; i += 1) {
         makeActiveByIndex([selectedLayers[i]], false);
         tmpTxt = txt;
@@ -32,11 +52,33 @@ function doRename(mode, selectedLayers, txt, startNumber, inverse) {
         tmpTxt = tmpTxt.replace("$d", docName);
         switch (mode) {
             case "enumerate":
-                app.activeDocument.activeLayer.name = tmpTxt + " " + layerNumber.toString();
+                app.activeDocument.activeLayer.name = tmpTxt + layerNumber.toString();
                 break;
             default:
                 app.activeDocument.activeLayer.name = tmpTxt;
                 break;
+        }
+    }
+    makeActiveByIndex(selectedLayers, false);
+}
+
+function renameSelectedGroups(mode, txt, startNumber, inverse) {
+    // Select the groups you want to rename
+    var selectedGroups = app.activeDocument.layerSets;
+    var countEnd = selectedGroups.length + startNumber - 1;
+
+    // Define the new name for the groups
+    var newName = txt;
+
+    // Loop through each selected group and rename it
+    for (var i = 0; i < selectedGroups.length; i++) {
+        var group = selectedGroups[i];
+        alert(group.name)
+        if (inverse) {
+            layerNumber = startNumber + i
+        }
+        if (group.layers.length == 0) {
+            group.name = txt;
         }
     }
 }
@@ -72,22 +114,7 @@ function getSelectedLayersIdx() {
     return selectedLayers;
 }
 
-function makeActiveByIndex(idx, visible) {
-    for (var i = 0; i < idx.length; i += 1) {
-        var desc = new ActionDescriptor();
-        var ref = new ActionReference();
-        ref.putIndex(charIDToTypeID("Lyr "), idx[i]);
-        desc.putReference(charIDToTypeID("null"), ref);
-        if (i > 0) {
-            var idselectionModifier = stringIDToTypeID("selectionModifier");
-            var idselectionModifierType = stringIDToTypeID("selectionModifierType");alert
-            var idaddToSelection = stringIDToTypeID("addToSelection");
-            desc.putEnumerated(idselectionModifier, idselectionModifierType, idaddToSelection);
-        }
-        desc.putBoolean(charIDToTypeID("MkVs"), visible);
-        executeAction(charIDToTypeID("slct"), desc, DialogModes.NO);
-    }
-}
+
 var selectedLayers = getSelectedLayersIdx();
 
 try {
@@ -106,23 +133,29 @@ try {
         input.characters = 30;
         input.active = true;
 
-        var dPanel = dialog.add("panel", undefined, "Rename options");
-        dPanel.orientation = "row";
-        dPanel.alignChildren = "left";
-        dPanel.preferredSize = [350, -1];
-        var enumCheckBox = dPanel.add("checkbox", undefined, "Enumerate");
+        var enumPanel = dialog.add("panel", undefined, "Enumeration Options");
+        enumPanel.orientation = "row";
+        enumPanel.alignChildren = "left";
+        enumPanel.preferredSize = [350, -1];
+        var enumCheckBox = enumPanel.add("checkbox", undefined, "Enumerate");
         enumCheckBox.value = true;
-        var reverseCheckBox = dPanel.add("checkbox", undefined, "Reverse Order");
-        reverseCheckBox.value = false;
-
-        var startNumGroup = dPanel.add("group");
+        
+        var startNumGroup = enumPanel.add("group");
         startNumGroup.orientation = "row";
         startNumGroup.alignChildren = "right";
-        var startNumInput = startNumGroup.add("edittext");
         var startNumLabel = startNumGroup.add("statictext");
+        var startNumInput = startNumGroup.add("edittext");
+        startNumLabel.text = "Start From"
         startNumInput.characters = 3;
         startNumInput.text = 0;
-        startNumLabel.text = "Start Enumeration From"
+        var reverseCheckBox = enumPanel.add("checkbox", undefined, "Reverse Order");
+        reverseCheckBox.value = false;
+
+        var groupOptions = dialog.add("panel", undefined, "Group Options");
+        groupOptions.orientation = "row";
+        groupOptions.alignChildren = "left";
+        var groupCheckBox = enumPanel.add("checkbox", undefined, "Rename Groups Only");
+        groupCheckBox.value = false;
         
         var submitGroup = dialog.add("group");
         submitGroup.orientation = "row";
@@ -149,12 +182,18 @@ try {
             if (!startNum) {
                 startNum = 0;
             }
+            startNum = verifyFLoat(startNum);
+            startNum = Math.floor(startNum);
             if (doEnum) {
                 mode = "enumerate";
             }
-            app.activeDocument.suspendHistory("Layers Renamer Script", "doRename(mode, selectedLayers, txt, startNum, doReverse)");
-            makeActiveByIndex(selectedLayers, false);
-        }
+            if (groupCheckBox.value) {
+                app.activeDocument.suspendHistory("Groups Renamer Script", "renameSelectedGroups(mode, txt, startNum, doReverse)");
+            }
+            else {
+                    app.activeDocument.suspendHistory("Layers Renamer Script", "renameSelectedLayers(mode, selectedLayers, txt, startNum, doReverse)");
+                }
+            }
     } else {
         alert("Please select more than one layer", "Error");
     }
