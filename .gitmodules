@@ -1,0 +1,6 @@
+[submodule "Duplicate-to-All"]
+	path = Duplicate-to-All
+	url = git@github.com:cameronmcefee/Duplicate-to-All.git
+[submodule "PS-Scripts"]
+	path = PS-Scripts
+	url = git@github.com:Paul-Riggott/PS-Scripts.git
