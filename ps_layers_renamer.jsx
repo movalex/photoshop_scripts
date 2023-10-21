@@ -146,8 +146,8 @@ try {
         var startNumLabel = startNumGroup.add("statictext");
         var startNumInput = startNumGroup.add("edittext");
         startNumLabel.text = "Start From"
-        startNumInput.characters = 3;
-        startNumInput.text = 0;
+        startNumInput.characters = 2;
+        startNumInput.text = 1;
         var reverseCheckBox = enumPanel.add("checkbox", undefined, "Reverse Order");
         reverseCheckBox.value = false;
 
@@ -180,7 +180,7 @@ try {
             var doEnum = enumCheckBox.value;
             var startNum = startNumInput.text;
             if (!startNum) {
-                startNum = 0;
+                startNum = 1;
             }
             startNum = verifyFLoat(startNum);
             startNum = Math.floor(startNum);
