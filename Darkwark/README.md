@@ -17,3 +17,9 @@ More info: https://blog.darkwark.com/layerRenamer/
 Apply same transformation to each selected layer.
 
 More info: https://blog.darkwark.com/transformEach21/
+
+# ps_rotateme
+
+RotateMe is a script that makes desired amount of clones for selected layer and places all copies around a cricle.
+
+More info: https://blog.darkwark.com/rotateMe3/
