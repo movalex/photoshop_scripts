@@ -1,3 +1,13 @@
+#target photoshop
+/*
+<javascriptresource>
+<name>[D] Renamer</name>
+<enableinfo>true</enableinfo>
+<category>DarkWark</category>
+</javascriptresource>
+*/
+
+
 /*
  * Batch Rename Selected Layers Script
  * Version 1.2

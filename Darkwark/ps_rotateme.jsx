@@ -1,8 +1,20 @@
+#target photoshop
 /*
-* Decompiled with Jsxer
-* Version: 1.4.1
-* JSXBIN 2.0
+<javascriptresource>
+<name>[D] RotateMe</name>
+<enableinfo>true</enableinfo>
+<category>DarkWark</category>
+</javascriptresource>
 */
+
+
+/*
+ * Transform Each Selected Layer Script
+ * Version 2.2
+ * Created by Kamil Khadeyev (@darkwark)
+ * Decompiled with Jsxer Version: 1.4.1 from JSXBIN 2.0
+ * LICENSE: MIT
+ */
 
 function rotateMe3(dAngle, groupLayers, layer, radius, rotateRelativePath, saveOriginal, steps) {
     var startRadius = radius;

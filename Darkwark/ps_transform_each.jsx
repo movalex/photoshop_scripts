@@ -1,3 +1,13 @@
+#target photoshop
+/*
+<javascriptresource>
+<name>[D] Transform Each</name>
+<enableinfo>true</enableinfo>
+<category>DarkWark</category>
+</javascriptresource>
+*/
+
+
 /*
  * Transform Each Selected Layer Script
  * Version 2.2
