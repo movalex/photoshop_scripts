@@ -1,4 +1,18 @@
-// The script created with the help of Bing Search GPT.
+#target photoshop
+/*
+<javascriptresource>
+<name>[AB] Create Shapes Grid</name>
+<enableinfo>true</enableinfo>
+<category>DarkWark</category>
+</javascriptresource>
+*/
+
+// Easily create a grid of shapes. 
+// Use this script on your own risk.
+// License: MIT
+// Copyright: Alexey Bogomolov <mail@abogomolov.com>, 2023
+
+
 // Create dialog window
 var w = new Window('dialog', 'Create Layers Grid');
 // w.add('statictext', undefined, 'Number of copies:');

@@ -1,5 +1,13 @@
 #target photoshop
 
+/*
+Usage:
+* Run script
+* Create a group
+* Rename it
+* Create another group, it will inherit the new name with sequential number
+*/
+
 // https://community.adobe.com/t5/photoshop-ecosystem-discussions/script-to-create-groups-and-rename-them-with-sequential-numbers/m-p/13734860#M725060
 // https://www.youtube.com/watch?v=pIYJ0lqsuI8
 
