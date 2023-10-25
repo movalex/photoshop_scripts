@@ -3,7 +3,7 @@
 <javascriptresource>
 <name>[AB] Rename all Text Layers</name>
 <enableinfo>true</enableinfo>
-<category>myscripts</category>
+<category>MyScripts</category>
 </javascriptresource>
 */
 
