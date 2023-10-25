@@ -3,7 +3,7 @@
 <javascriptresource>
 <name>[AB] Create Shapes Grid</name>
 <enableinfo>true</enableinfo>
-<category>DarkWark</category>
+<category>myscripts</category>
 </javascriptresource>
 */
 
