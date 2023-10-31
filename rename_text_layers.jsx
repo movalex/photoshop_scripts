@@ -7,7 +7,7 @@
 </javascriptresource>
 */
 
-// The script to rename all text layers according to their text contents
+// The script to rename text layers according to their contents.
 // Use it on your own risk.
 // License: MIT
 // Copyright: Alexey Bogomolov <mail@abogomolov.com>, 2023
