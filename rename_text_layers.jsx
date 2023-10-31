@@ -117,13 +117,11 @@ function selectByID(id, add) {
     if (add) desc1.putEnumerated(stringIDToTypeID("selectionModifier"), stringIDToTypeID("selectionModifierType"), stringIDToTypeID("addToSelection"));
     executeAction(charIDToTypeID('slct'), desc1, DialogModes.NO);
 }
-// end of selectByID()
 
 // if we _really_ want to get artLayers we should select them one by one with IDs
 function processSelectedByID(selectedLayers) {
     for (var i = 0; i < selectedLayers.length; i++) {
         selectByID(selectedLayers[i].id);
-        // alert(selectedLayers[i].name);
         // renameTextByContents(selectedLayers[i]);
         // alert(activeDocument.activeLayer.name);
         renameTextByContents(activeDocument.activeLayer);
