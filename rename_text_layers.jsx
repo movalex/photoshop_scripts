@@ -7,11 +7,6 @@
 </javascriptresource>
 */
 
-/*
-WARNING: 
-The script might change names of all Text layers in the document
-*/
-
 // The script to rename all text layers according to their text contents
 // Use it on your own risk.
 // License: MIT
