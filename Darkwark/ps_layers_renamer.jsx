@@ -12,7 +12,6 @@
  * Batch Rename Selected Layers Script
  * Version 1.2
  * Created by Kamil Khadeyev (@darkwark)
- * Decompiled with Jsxer Version: 1.4.1 from JSXBIN 2.0
  * Updates by Alexey Bogomolov (@movalex)
  */
 
