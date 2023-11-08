@@ -30,7 +30,9 @@ function renameTextByContents(layer) {
     }
     if (isTextLayer(layer)) {
         // Rename the layer using the text value of the text layer
-        layer.name = layer.textItem.contents;
+        textContents = layer.textItem.contents;
+        textContents = textContents.replace(/[]/gmi, " ")
+        layer.name = textContents;
     }
 }
 
