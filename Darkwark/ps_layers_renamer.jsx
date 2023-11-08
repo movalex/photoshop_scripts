@@ -37,7 +37,7 @@ function makeActiveByIndex(idx, visible) {
         desc.putReference(charIDToTypeID("null"), ref);
         if (i > 0) {
             var idselectionModifier = stringIDToTypeID("selectionModifier");
-            var idselectionModifierType = stringIDToTypeID("selectionModifierType");alert
+            var idselectionModifierType = stringIDToTypeID("selectionModifierType");
             var idaddToSelection = stringIDToTypeID("addToSelection");
             desc.putEnumerated(idselectionModifier, idselectionModifierType, idaddToSelection);
         }
@@ -55,7 +55,7 @@ function renameSelectedLayers(mode, selectedLayers, txt, startNumber, inverse) {
         docName = docName.replace(".psd", "");
         layerName = app.activeDocument.activeLayer.name
         layerNumber = countEnd - i
-        if (inverse){
+        if (inverse) {
             layerNumber = startNumber + i
         }
         tmpTxt = tmpTxt.replace("$t", layerName);
@@ -70,27 +70,6 @@ function renameSelectedLayers(mode, selectedLayers, txt, startNumber, inverse) {
         }
     }
     makeActiveByIndex(selectedLayers, false);
-}
-
-function renameSelectedGroups(mode, txt, startNumber, inverse) {
-    // Select the groups you want to rename
-    var selectedGroups = app.activeDocument.layerSets;
-    var countEnd = selectedGroups.length + startNumber - 1;
-
-    // Define the new name for the groups
-    var newName = txt;
-
-    // Loop through each selected group and rename it
-    for (var i = 0; i < selectedGroups.length; i++) {
-        var group = selectedGroups[i];
-        alert(group.name)
-        if (inverse) {
-            layerNumber = startNumber + i
-        }
-        if (group.layers.length == 0) {
-            group.name = txt;
-        }
-    }
 }
 
 function getSelectedLayersIdx() {
@@ -149,7 +128,7 @@ try {
         enumPanel.preferredSize = [350, -1];
         var enumCheckBox = enumPanel.add("checkbox", undefined, "Enumerate");
         enumCheckBox.value = true;
-        
+
         var startNumGroup = enumPanel.add("group");
         startNumGroup.orientation = "row";
         startNumGroup.alignChildren = "right";
@@ -158,26 +137,25 @@ try {
         startNumLabel.text = "Start From"
         startNumInput.characters = 2;
         startNumInput.text = 1;
-        var reverseCheckBox = enumPanel.add("checkbox", undefined, "Reverse Order");
+        var reverseCheckBox = enumPanel.add("checkbox", undefined, "Reverse enumeration?");
         reverseCheckBox.value = false;
 
-        var groupOptions = dialog.add("panel", undefined, "Group Options");
-        groupOptions.orientation = "row";
-        groupOptions.alignChildren = "left";
-        var groupCheckBox = enumPanel.add("checkbox", undefined, "Rename Groups Only");
-        groupCheckBox.value = false;
-        
+        // var groupOptions = dialog.add("panel", undefined, "Group Options");
+        // groupOptions.orientation = "row";
+        // groupOptions.alignChildren = "left";
+        // var groupCheckBox = enumPanel.add("checkbox", undefined, "Rename Groups Only");
+        // groupCheckBox.value = false;
+
         var submitGroup = dialog.add("group");
         submitGroup.orientation = "row";
         var ok_btn = submitGroup.add("button", undefined, "OK");
         var cancel_btn = submitGroup.add("button", undefined, "Cancel");
 
-        enumCheckBox.onClick = function (){
+        enumCheckBox.onClick = function() {
             var doEnum = enumCheckBox.value;
             if (doEnum) {
                 reverseCheckBox.enabled = true
-            }
-            else {
+            } else {
                 reverseCheckBox.enabled = false
                 reverseCheckBox.value = false
             }
@@ -197,16 +175,11 @@ try {
             if (doEnum) {
                 mode = "enumerate";
             }
-            if (groupCheckBox.value) {
-                app.activeDocument.suspendHistory("Groups Renamer Script", "renameSelectedGroups(mode, txt, startNum, doReverse)");
-            }
-            else {
-                    app.activeDocument.suspendHistory("Layers Renamer Script", "renameSelectedLayers(mode, selectedLayers, txt, startNum, doReverse)");
-                }
-            }
+            app.activeDocument.suspendHistory("Layers Renamer Script", "renameSelectedLayers(mode, selectedLayers, txt, startNum, doReverse)");
+        }
     } else {
         alert("Please select more than one layer", "Error");
     }
 } catch (e) {
-    alert(e,"Error");
+    alert(e, "Error");
 }
