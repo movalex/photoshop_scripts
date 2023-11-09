@@ -74,29 +74,50 @@ previewButton.onClick = (function() {
 });
 w.show();
 
+function getSelectedLayersInfo() {
 
-function getSelectedLayers() {
-    var selectedLayers = [];
+    // https://stackoverflow.com/questions/63448143/get-selected-layers
+
+    var layers = [];
+    var layer;
     var ref = new ActionReference();
-    ref.putEnumerated(charIDToTypeID("Dcmn"), charIDToTypeID("Ordn"), charIDToTypeID("Trgt"));
-    var desc = executeActionGet(ref);
-    if (desc.hasKey(stringIDToTypeID("targetLayers"))) {
-      desc = desc.getList(stringIDToTypeID("targetLayers"));
-      for (var i = 0; i < desc.count; i++) {
-        var index = desc.getReference(i).getIndex();
+    var desc;
+    var tempIndex = 0;
+    var ref2;
+    ref.putProperty(stringIDToTypeID("property"), stringIDToTypeID("targetLayers"));
+    ref.putEnumerated(charIDToTypeID('Dcmn'), charIDToTypeID('Ordn'), charIDToTypeID('Trgt'));
+
+    var targetLayers = executeActionGet(ref).getList(stringIDToTypeID("targetLayers"));
+    for (var i = 0; i < targetLayers.count; i++) {
+        ref2 = new ActionReference();
+
+        // if there's a background layer in the document, AM indices start with 1, without it from 0. ¯\_(ツ)_/¯ 
         try {
-          var layer = app.activeDocument.layers[index - 1];
-          selectedLayers.push(layer);
-        } catch (e) {}
-      }
+            activeDocument.backgroundLayer;
+            ref2.putIndex(charIDToTypeID('Lyr '), targetLayers.getReference(i).getIndex());
+            desc = executeActionGet(ref2);
+            tempIndex = desc.getInteger(stringIDToTypeID("itemIndex")) - 1;
+
+        } catch (o) {
+            ref2.putIndex(charIDToTypeID('Lyr '), targetLayers.getReference(i).getIndex() + 1);
+            desc = executeActionGet(ref2);
+            tempIndex = desc.getInteger(stringIDToTypeID("itemIndex"));
+        }
+
+        layer = {};
+        layer.index = tempIndex;
+        layer.id = desc.getInteger(stringIDToTypeID("layerID"));
+        layer.name = desc.getString(charIDToTypeID("Nm  "));
+        layers.push(layer);
     }
-    return selectedLayers;
-  }
+
+    return layers;
+}
 
 function createGrid() {
     // Duplicate selected layer and make a grid of layers, then disable the source layer
 
-    var selectedLayers = getSelectedLayers();
+    var selectedLayers = getSelectedLayersInfo();
     if (selectedLayers.length != 1) {
         alert("Select exactly one layer to duplicate!", "Error")
         return
@@ -136,4 +157,3 @@ function runScript() {
     app.activeDocument.suspendHistory("Duplicate and move layers", "createGrid()")
     app.purge(PurgeTarget.UNDOCACHES);
 }
-
