@@ -10,9 +10,12 @@
 
 /*
  * Batch Rename Selected Layers Script
- * Version 1.2
+ * Version 1.3
  * Created by Kamil Khadeyev (@darkwark)
- * Updates by Alexey Bogomolov (@movalex)
+ * Updates by Alexey Bogomolov (@movalex):
+ * - add inverse enumeration
+ * - adjust enumeration start
+ * - rename with prefix or suffix
  */
 
 function verifyFLoat(num) {
@@ -45,7 +48,7 @@ function makeActiveByIndex(idx, visible) {
     }
 }
 
-function renameSelectedLayers(mode, selectedLayers, txt, startNumber, inverse) {
+function renameSelectedLayers(mode, selectedLayers, txt, startNumber, inverse, renameOption) {
     var countEnd = selectedLayers.length + startNumber - 1;
     for (var i = 0; i < selectedLayers.length; i += 1) {
         makeActiveByIndex([selectedLayers[i]], false);
@@ -53,12 +56,29 @@ function renameSelectedLayers(mode, selectedLayers, txt, startNumber, inverse) {
         docName = app.activeDocument.name;
         docName = docName.replace(".psd", "");
         layerName = app.activeDocument.activeLayer.name
+
+        // setup layer numbering
         layerNumber = countEnd - i
         if (inverse) {
             layerNumber = startNumber + i
         }
+
+        // set txt as suffix or prefis to the layername 
+        switch (renameOption) {
+            case "suffix":
+                tmpTxt = layerName + txt;
+                break;
+            case "prefix":
+                tmpTxt = txt + layerName;
+                break;
+            default :
+                break;
+        }
+
+        // apply tokens if specified
         tmpTxt = tmpTxt.replace("$t", layerName);
         tmpTxt = tmpTxt.replace("$d", docName);
+
         switch (mode) {
             case "enumerate":
                 app.activeDocument.activeLayer.name = tmpTxt + layerNumber.toString();
@@ -109,7 +129,7 @@ try {
     if (selectedLayers.length > 1) {
         var title = selectedLayers.length.toString() + " Layers Selected";
         var dialog = new Window("dialog", title);
-        dialog.alignChildren = "right";
+        dialog.alignChildren = "left";
         dialog.margins = 10;
         dialog.closeButton = false;
 
@@ -120,6 +140,16 @@ try {
         var input = inputGroup.add("edittext");
         input.characters = 30;
         input.active = true;
+
+        var renameOptionsPanel = dialog.add("panel", undefined, "Rename Options");
+        renameOptionsPanel.orientation = "row";
+        renameOptionsPanel.alignChildren = "left";
+        renameOptionsPanel.preferredSize = [350, -1];
+        // Add a dropdown list
+        var ddLabel = renameOptionsPanel.add("statictext");
+        ddLabel.text = "Choose rename option";
+        var dropdownList = renameOptionsPanel.add("dropdownlist", undefined, ["replace", "prefix", "suffix"]);
+        dropdownList.selection = 0; // Set the default selection
 
         var enumPanel = dialog.add("panel", undefined, "Enumeration Options");
         enumPanel.orientation = "row";
@@ -165,6 +195,7 @@ try {
             var txt = input.text;
             var doReverse = reverseCheckBox.value;
             var doEnum = enumCheckBox.value;
+            var renameOption = dropdownList.selection.text;
             var startNum = startNumInput.text;
             if (!startNum) {
                 startNum = 1;
@@ -174,7 +205,7 @@ try {
             if (doEnum) {
                 mode = "enumerate";
             }
-            app.activeDocument.suspendHistory("Layers Renamer Script", "renameSelectedLayers(mode, selectedLayers, txt, startNum, doReverse)");
+            app.activeDocument.suspendHistory("Layers Renamer Script", "renameSelectedLayers(mode, selectedLayers, txt, startNum, doReverse, renameOption)");
         }
     } else {
         alert("Please select more than one layer", "Error");
